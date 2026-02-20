@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs:*)",
+      "Bash(git init:*)",
+      "Bash(gh auth:*)",
+      "Bash(where:*)",
+      "Bash(cmd.exe //c \"where gh\")",
+      "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" auth status)",
+      "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" repo create artist-sites --public --source=. --remote=origin --description=\"Static site builder for music artist portfolio websites\")",
+      "Bash(git add:*)"
+    ]
+  }
+}
