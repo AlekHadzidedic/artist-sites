@@ -81,3 +81,16 @@ example-artist/
 
 - `docs/ux-research-music-artist-websites.md` — UX benchmarking and content requirements
 - `docs/plans/2025-02-10-music-artist-website-design.md` — Full implementation plan with code examples for all 10 tasks
+
+<!-- synced-from-global-claude-md -->
+# Global rules (synced from ~/.claude/CLAUDE.md, which cloud sessions cannot see)
+
+# Global instructions
+
+## Web scraping / crawling — use crawl4ai ONLY (all projects)
+- **All web scraping, crawling, and page extraction uses the self-hosted crawl4ai server. Do NOT use Firecrawl** (its plugin/skills are disabled). Prefer crawl4ai over WebFetch for full-page / JS-rendered content.
+- Skills (global): `crawl4ai` (umbrella: scrape/markdown/screenshot/pdf, MCP + REST), `crawl4ai-crawl` (deep-crawl + batch), `crawl4ai-extract` (CSS/XPath/regex JSON), `crawl4ai-interact` (JS + sessions). MCP server `crawl4ai` is registered (user scope).
+- **Design / reference research: crawl4ai FIRST, screenshots second.** Pull the page's markdown or HTML with crawl4ai and read the structure (section order, grid, type roles, what the accent is reserved for) before forming any judgement about a reference site. Screenshots are fine and often useful — they are just not the first move, and never the only one. Reason: an image read costs many times a markdown read and answers fewer structural questions.
+- Server: `https://crawl.arlek.online` (public, Bearer) / `http://crawl4ai:11235` (internal, e.g. n8n). Creds: `~/.claude/crawl4ai.env`. Ops: `ssh vps` (Hostinger VPS, runs alongside n8n). Runs the derived image `crawl4ai-trusted` — trust patch baked in, so native deep-crawl / sessions / js_code work over REST. See `~/.claude/skills/crawl4ai/SKILL.md` for details + revert.
+
+<!-- synced-from-global-claude-md -->

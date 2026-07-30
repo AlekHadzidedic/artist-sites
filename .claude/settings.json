@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "product-manager@claude-code-skills": true,
+    "supabase@claude-plugins-official": true,
+    "firebase@claude-plugins-official": true,
+    "vercel@claude-plugins-official": true
+  },
+
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "TodoWrite(*)",
+      "Skill(*)",
+      "ToolSearch(*)",
+      "mcp__crawl4ai__*",
+      "mcp__yt-research__*",
+      "mcp__playwright__*"
+    ],
+    "deny": [
+      "Bash(*reset --hard*)",
+      "Bash(*DROP TABLE*)",
+      "Bash(*DROP DATABASE*)",
+      "Bash(*DELETE FROM*)",
+      "Bash(killall*)"
+    ],
+    "ask": [
+      "Bash(rm -rf*)",
+      "Bash(*--force*)"
+    ]
+  },
+
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/scripts/cloud-setup.sh",
+            "timeout": 120,
+            "statusMessage": "Preparing session..."
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "c=$(sed -n 's/.*\"command\"[[:space:]]*:[[:space:]]*\"//p' | head -1); case \"$c\" in \"find /\"*|*\"&& find /\"*|*\"; find /\"*|*\"| find /\"*) ;; *) exit 0 ;; esac; printf '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Blocked by hook: an unscoped filesystem-wide search blows the 120s timeout, backgrounds itself, and then holds file handles that make git worktree remove fail for the rest of the session. Scope the search to the repo, or use the Glob tool.\"}}'",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

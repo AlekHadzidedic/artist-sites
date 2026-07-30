@@ -1,0 +1,46 @@
+{
+  "_comment": [
+    "Project-scope MCP servers. This file is COMMITTED to the repo, which is the",
+    "only way MCP servers reach a cloud session — user-scope servers added with",
+    "`claude mcp add` live in ~/.claude.json on your machine and never travel.",
+    "",
+    "${VAR} expands from the environment at load time, so the tokens come from the",
+    "cloud environment's variables (or your local shell) and never get committed.",
+    "${VAR:-default} supplies a fallback.",
+    "",
+    "These servers dial out from inside the session VM, so their hosts must be in",
+    "the environment's allowed-domains list. See ALLOWED-DOMAINS.txt.",
+    "",
+    "Delete this _comment key before committing if you want strict JSON hygiene;",
+    "Claude Code ignores unknown top-level keys either way.",
+    "",
+    "WINDOWS CAVEAT on the playwright entry: your user-scope config launches it as",
+    "`cmd /c npx ...` because bare `npx` can fail to resolve on Windows. This file",
+    "is shared with Linux cloud sessions where `cmd` does not exist, so it uses bare",
+    "`npx`. If playwright fails to start locally, delete the entry here — your",
+    "user-scope server in ~/.claude.json already covers local sessions, and project",
+    "scope only needs to carry it for the cloud."
+  ],
+  "mcpServers": {
+    "crawl4ai": {
+      "type": "sse",
+      "url": "${CRAWL4AI_BASE_URL:-https://crawl.arlek.online}/mcp/sse",
+      "headers": {
+        "Authorization": "Bearer ${CRAWL4AI_API_TOKEN}"
+      }
+    },
+    "yt-research": {
+      "type": "http",
+      "url": "https://youtube-transcript-production.up.railway.app/mcp",
+      "headers": {
+        "Authorization": "Bearer ${YT_RESEARCH_TOKEN}"
+      }
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--headless"],
+      "env": {}
+    }
+  }
+}
