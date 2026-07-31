@@ -1,17 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-
-  "enabledPlugins": {
-    "superpowers@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
-    "feature-dev@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true,
-    "product-manager@claude-code-skills": true,
-    "supabase@claude-plugins-official": true,
-    "firebase@claude-plugins-official": true,
-    "vercel@claude-plugins-official": true
-  },
-
   "permissions": {
     "allow": [
       "Bash(*)",
@@ -41,7 +29,6 @@
       "Bash(*--force*)"
     ]
   },
-
   "hooks": {
     "SessionStart": [
       {
@@ -68,5 +55,6 @@
         ]
       }
     ]
-  }
+  },
+  "_comment": "Skills come from ~/.claude/skills locally and from claude.ai-synced skills in cloud sessions. Do NOT commit shared skills here - a repo copy is project-scope and shadows the fresher one. enabledPlugins was removed: repo-declared plugins are inert in cloud sessions (verified 2026-07-30)."
 }
